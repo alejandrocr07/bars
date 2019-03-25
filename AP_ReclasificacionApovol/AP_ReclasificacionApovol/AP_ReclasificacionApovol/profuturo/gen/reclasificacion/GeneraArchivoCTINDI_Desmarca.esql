@@ -1,0 +1,40 @@
+BROKER SCHEMA profuturo.gen.reclasificacion
+
+CREATE COMPUTE MODULE GeneraArchivoCTINDI_Desmarca
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+
+		CREATE FIELD OutputRoot.XMLNSC.bitacoraBean;
+		DECLARE ref_bit REFERENCE TO OutputRoot.XMLNSC.bitacoraBean;
+		DECLARE ref_msgIn REFERENCE TO Environment.Variables.MsgIn;
+
+		SET ref_bit.folio = ref_msgIn.*:*.p_Folio;
+		SET ref_bit.idEstatus = ref_msgIn.*:*.p_EstatusCan;
+		SET ref_bit.idEtapa = ref_msgIn.*:*.p_Etapa;
+		SET ref_bit.idResultado = ref_msgIn.*:*.p_Resultado;
+		SET ref_bit.idSubetapa = ref_msgIn.*:*.p_Subetapa;
+		SET ref_bit.idSubproceso = ref_msgIn.*:*.p_Subproceso;
+		SET ref_bit.usuario = ref_msgIn.*:*.p_Usuario;
+		PROPAGATE TO LABEL 'Bitacora' MESSAGE OutputRoot FINALIZE NONE DELETE NONE;
+
+		SET OutputRoot = NULL;
+
+		SET OutputRoot.XMLNSC.ns7:confirmarArchivoCTINDI.ns7:claveConfirmacion = ref_msgIn.*:*.claveConfirmacion;
+		SET OutputRoot.XMLNSC.ns7:confirmarArchivoCTINDI.ns7:folioLote = ref_msgIn.*:*.p_Folio;
+		SET OutputRoot.XMLNSC.ns7:confirmarArchivoCTINDI.ns7:subEtapa = ref_msgIn.*:*.p_Subetapa;
+		SET OutputRoot.XMLNSC.ns7:confirmarArchivoCTINDI.ns7:idEstatus = ref_msgIn.*:*.p_Estatus_fin;
+		IF Environment.Variables.BanDesmarca = TRUE THEN
+			SET OutputRoot.XMLNSC.ns7:confirmarArchivoCTINDI.ns7:nombreServicioError = 'PANCIN_GAR_DES_0050';
+		ELSEIF Environment.Variables.BanDesmarca = FALSE THEN
+			SET OutputRoot.XMLNSC.ns7:confirmarArchivoCTINDI.ns7:nombreServicioError = 'PANCIN_GAR_CTINDI_0040';
+		END IF;
+		SET OutputRoot.XMLNSC.ns7:confirmarArchivoCTINDI.ns7:capaError = 'ETL';
+		SET OutputRoot.XMLNSC.ns7:confirmarArchivoCTINDI.ns7:descripcionError = 'No se obtuvo respuesta del servicio';
+		SET OutputRoot.XMLNSC.ns7:confirmarArchivoCTINDI.ns7:success = FALSE;
+
+		PROPAGATE TO TERMINAL 'out' MESSAGE OutputRoot FINALIZE NONE DELETE NONE;
+
+		RETURN FALSE;
+	END;
+
+END MODULE;

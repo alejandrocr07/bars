@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir="." name="GenerateDocumentService" default="dev">
+	<property file="build.properties"/>
+	<property name="name.bar.line" value="${name.barfile.line}"/>
+	<property name="broker.application.line" value="${project.application.line}"/>
+    <property name="toolkit.home" value="${project.runtime}" />
+	<property name="toolkit.home.override" value="${project.runtime.override}" />	
+	<property name="bar.workspace" value="${project.workspace}" />
+		
+	<target name="local" description="Local - create bar file">
+				<echo message = "VALIDATE - Invoice Flow" />
+				<echo message = "Starting LOCAL Compilation" />
+				<property name="bar.deploy" location="local/${name.barfile.line}" />
+				<property name="bar.location.deployment" value="local" />
+				<property name="BRKR" value="${BRKR_LOCAL}" />
+				<property name="EG" value="${EG_LOCAL}" />
+				<property name="bar.properties" value="ambientes/local.properties" />
+				<property name="envdir" value="Local" />
+				<property name="URL" value="${URL_LOCAL}" />
+				<antcall target="clean"/>
+				<antcall target="mqsicreatebar.create.line"/>
+				<antcall target="mqsicreatebar.overridebar.line"/>
+				<antcall target="mqsideploy.deploy.line"/>
+				<echo message = "Ending Local Compilation" />
+	</target>
+	
+	<target name="dev" description="Dev - create bar file">
+					<echo message = "VALIDATE - Invoice Flow" />
+					<echo message = "Starting DEV Compilation" />
+					<property name="bar.deploy" location="dev/${name.barfile.line}" />
+					<property name="bar.location.deployment" value="dev" />
+					<property name="BRKR" value="${BRKR_DEV}" />
+					<property name="EG" value="${EGXGP}" />
+					<property name="bar.properties" value="ambientes/dev.properties" />
+					<property name="envdir" value="Dev" />
+					<property name="URL" value="${URL_DEV}" />
+					<antcall target="clean"/>
+					<antcall target="mqsicreatebar.create.line"/>
+					<antcall target="mqsicreatebar.overridebar.line"/>
+					<antcall target="mqsideploy.deploy.line"/>
+					<echo message = "Ending Dev Compilation" />
+	</target>
+	<target name="qa" description="QA - create bar file">
+						<echo message = "VALIDATE - Invoice Flow" />
+						<echo message = "Starting QA Compilation" />
+						<property name="bar.deploy" location="qa/${name.barfile.line}" />
+						<property name="bar.location.deployment" value="qa" />
+						<property name="BRKR" value="${BRKR_QA}" />
+						<property name="EG" value="${EGXGP}" />
+						<property name="bar.properties" value="ambientes/qa.properties" />
+						<property name="envdir" value="Dev" />
+						<property name="URL" value="${URL_QA}" />
+						<antcall target="clean"/>
+						<antcall target="mqsicreatebar.create.line"/>
+						<antcall target="mqsicreatebar.overridebar.line"/>
+						<antcall target="mqsideploy.deploy.line"/>
+						<echo message = "Ending Dev Compilation" />
+	</target>
+	<target name="qaProfuturo" description="QA Profuturo - create bar file">
+							<echo message = "VALIDATE - Invoice Flow" />
+							<echo message = "Starting QAProfuturo Compilation" />
+							<property name="bar.deploy" location="qaProfuturo/${name.barfile.line}" />
+							<property name="bar.location.deployment" value="qaProfuturo" />
+							<property name="BRKR" value="${BRKR_QAPROFUTURO}" />
+							<property name="EG" value="${EGXGP}" />
+							<property name="bar.properties" value="ambientes/qaProfuturo.properties" />
+							<property name="envdir" value="qaProfuturo" />
+							<property name="URL" value="${URL_QAPROFUTURO}" />
+							<antcall target="clean"/>
+							<antcall target="mqsicreatebar.create.line"/>
+							<antcall target="mqsicreatebar.overridebar.line"/>
+							<antcall target="mqsideploy.deploy.line"/>
+							<echo message = "Ending Qa Profuturo Compilation" />
+		</target>
+	<target name="prodProfuturo" description="Prod Profuturo - create bar file">
+							<echo message = "VALIDATE - Invoice Flow" />
+							<echo message = "Starting Prod Profuturo Compilation" />
+							<property name="bar.deploy" location="prodProfuturo/${name.barfile.line}" />
+							<property name="bar.location.deployment" value="prodProfuturo" />
+							<property name="BRKR" value="${BRKR_PRODPROFUTURO}" />
+							<property name="EG" value="${EGXGP}" />
+							<property name="bar.properties" value="ambientes/prodProfuturo.properties" />
+							<property name="envdir" value="prodProfuturo" />
+							<property name="URL" value="${URL_PRODPROFUTURO}" />
+							<antcall target="clean"/>
+							<antcall target="mqsicreatebar.create.line"/>
+							<antcall target="mqsicreatebar.overridebar.line"/>
+							<antcall target="mqsideploy.deploy.line"/>
+							<echo message = "Ending ProdProfuturo Compilation" />
+		</target>
+	<target name="clean" description="Elimina Carpetas de Despliegue">
+		<echo message="Delete dist folder (deployment folder) [BEGIN]"/>
+		<delete dir="${bar.location.deployment}"/>
+		<mkdir dir="${bar.location.deployment}"/>
+		<echo message="Delete dist folder (deployment folder) [END]"/>
+	
+	</target>
+	
+	<target name="mqsicreatebar.create.line">
+			<echo message="Create Broker Archive file: ${bar.location.deployment}\${name.bar.line}${envdir}.bar [BEGIN]" />
+			<echo message="${toolkit.home}\mqsicreatebar.exe" />
+			<echo message="-data ${bar.workspace}" />
+			<echo message="-b ${bar.location.deployment}\${name.bar.line}.bar" />
+		    <echo message="-a ${broker.application.line} -deployAsSource"/>
+			<exec executable="${toolkit.home}\mqsicreatebar.exe" spawn="false" logerror="false" failonerror="true" vmlauncher="false">
+				<arg value="-data" />
+				<arg value="${bar.workspace}" />
+				<arg value="-b" />
+				<arg value="${bar.location.deployment}\${name.bar.line}.bar" />
+				<arg value="-a" />
+				<arg value="${broker.application.line}" />
+				<arg value="-deployAsSource" />
+			</exec>
+			<echo message="Completed creating Broker Archive file - ${name.bar.line} [END]" />
+		</target>
+	
+		<target name="mqsicreatebar.overridebar.line">
+					<echo message="Override Broker Archive file: ${name.bar.line} [BEGIN]" />
+					<exec executable="${toolkit.home.override}\mqsiapplybaroverride.bat" spawn="false" failonerror="true" vmlauncher="false">
+						<arg value="-k" />
+						<arg value="${broker.application.line}" />
+						<arg value="-b" />
+						<arg value="${bar.location.deployment}\${name.bar.line}.bar" />
+						<arg value="-p" />
+						<arg value="${bar.properties}" />
+						<arg value="-r" />
+					</exec>
+					<echo message="Completed overriding Broker Archive file - ${name.bar.line} [END]" />
+				</target>
+	<target name="mqsideploy.deploy.line">
+						<echo message="Deploy Broker Archive file: ${name.bar.line} [BEGIN]" />
+						<echo message="Path: ${bar.deploy}" />
+						<exec executable="${toolkit.home.override}\mqsideploy.exe" spawn="false" failonerror="true" vmlauncher="false">
+							<arg value="${BRKR}" />
+							<arg value="-e" />
+							<arg value="${EG}" />
+							<arg value="-i" />
+							<arg value="${URL}" />
+							<arg value="-a" />
+							<arg value="${bar.deploy}.bar" />
+							<arg value="-w" />
+							<arg value="${TIME}" />
+						</exec>
+						<echo message="Completed overriding Broker Archive file - ${name.bar.line} [END]" />
+					</target>	
+		
+</project>

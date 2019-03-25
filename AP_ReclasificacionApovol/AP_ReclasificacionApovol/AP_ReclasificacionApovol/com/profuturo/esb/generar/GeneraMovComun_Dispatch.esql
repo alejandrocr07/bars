@@ -1,0 +1,31 @@
+BROKER SCHEMA com.profuturo.esb.generar
+
+
+CREATE COMPUTE MODULE GeneraMovComun_Dispatch
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET Environment.Variables.MsgIn = InputRoot;
+		
+		PROPAGATE TO LABEL 'BitGenMov' MESSAGE OutputRoot FINALIZE NONE;
+		SET OutputRoot = NULL;
+		SET Environment.Variables.BanErr = FALSE;
+		SET Environment.Variables.Op = 'Previo';
+		PROPAGATE TO LABEL 'Previo' MESSAGE OutputRoot FINALIZE NONE;
+		IF Environment.Variables.BanErr = FALSE THEN
+			
+			SET Environment.Variables.Op = 'Comun';
+			SET Environment.Variables.BanErrP = FALSE;
+			PROPAGATE TO LABEL 'Comun' MESSAGE OutputRoot FINALIZE NONE;
+			
+
+			IF Environment.Variables.BanErrP = FALSE THEN
+			SET Environment.Variables.Op = 'Comun';
+			PROPAGATE TO LABEL 'BPMResp' MESSAGE OutputRoot FINALIZE NONE;
+				
+			END IF;
+		ELSE
+			
+		END IF;
+		RETURN FALSE;
+	END;
+END MODULE;

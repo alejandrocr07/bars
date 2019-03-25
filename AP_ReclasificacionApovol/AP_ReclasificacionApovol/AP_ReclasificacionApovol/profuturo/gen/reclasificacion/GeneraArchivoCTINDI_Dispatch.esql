@@ -1,0 +1,69 @@
+BROKER SCHEMA profuturo.gen.reclasificacion
+DECLARE ns3 NAMESPACE 'http://RECLASIFICACION_APOVOL.isd.ibm.com/soapoverhttp/';
+DECLARE ns35 NAMESPACE 'http://bitacora.webservice.ws.nci.profuturo.mx/';
+DECLARE ns NAMESPACE 'http://profuturo.mx/iib/Recaudacion/ReclasificacionApovol/v1';
+
+CREATE COMPUTE MODULE GeneraArchivoCTINDI_Dispatch
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		SET OutputRoot.XMLNSC.ns:PANCIN_GAR_CTINDI_0040Response.success = 'Servicio recibido con exito';
+		PROPAGATE TO TERMINAL 'out' MESSAGE OutputRoot FINALIZE NONE DELETE NONE;
+		SET OutputRoot = NULL;
+		
+		SET Environment.Variables.MsgIn = InputRoot.XMLNSC;
+		CREATE FIELD OutputRoot.XMLNSC.bitacoraBean;
+		DECLARE ref_bit REFERENCE TO OutputRoot.XMLNSC.bitacoraBean;
+		DECLARE ref_msgIn REFERENCE TO InputRoot.XMLNSC;
+
+		SET ref_bit.folio = ref_msgIn.*:*.p_Folio;
+		SET ref_bit.idEstatus = ref_msgIn.*:*.p_EstatusIni;
+		SET ref_bit.idEtapa = ref_msgIn.*:*.p_Etapa;
+		SET ref_bit.idResultado = ref_msgIn.*:*.p_Resultado;
+		SET ref_bit.idSubetapa = ref_msgIn.*:*.p_Subetapa;
+		SET ref_bit.idSubproceso = ref_msgIn.*:*.p_Subproceso;
+		SET ref_bit.usuario = ref_msgIn.*:*.p_Usuario;
+
+		PROPAGATE TO LABEL 'Bitacora' MESSAGE OutputRoot FINALIZE NONE DELETE NONE;
+
+		SET OutputRoot = NULL;
+
+		DECLARE msgIn REFERENCE TO InputRoot.XMLNSC.ns:PANCIN_GAR_CTINDI_0040;
+
+		CREATE FIELD OutputRoot.XMLNSC.ns3:PANCIN_GAR_CTINDI_0040;
+
+		DECLARE msgOut REFERENCE TO OutputRoot.XMLNSC.ns3:PANCIN_GAR_CTINDI_0040;
+
+		SET Environment.Variables.BanDesmarca = FALSE;
+		SET msgOut.sr_proceso = msgIn.p_Proceso;
+		SET msgOut.sr_subproceso = msgIn.p_Subproceso;
+		SET msgOut.sr_subetapa = msgIn.p_Subetapa;
+		SET msgOut.sr_folio = msgIn.p_Folio;
+		SET msgOut.sr_fecha_arch = msgIn.p_Fecha_arch;
+
+
+		PROPAGATE TO LABEL 'GenArch' MESSAGE OutputRoot FINALIZE NONE DELETE NONE;
+
+		IF Environment.Variables.BanDesmarca = TRUE THEN
+			SET OutputRoot = NULL;
+			SET OutputLocalEnvironment = NULL;
+			SET OutputLocalEnvironment.SOAP.Envelope.SOAP.Context.operation = 'PANCIN_GAR_DES_0050';
+			DECLARE msgEnt REFERENCE TO Environment.Variables.MsgIn.XMLNSC.*:PANCIN_GAR_CTINDI_0040;
+			CREATE FIELD OutputRoot.XMLNSC.ns3:PANCIN_GAR_DES_0050;
+			DECLARE msgSal REFERENCE TO OutputRoot.XMLNSC.ns3:PANCIN_GAR_DES_0050;
+			SET OutputLocalEnvironment.SOAP.Envelope.SOAP.Context.operation = 'PANCIN_GAR_DES_0050';
+			
+			SET msgSal.sr_proceso = msgIn.p_Proceso;
+			SET msgSal.sr_subproceso = msgIn.p_Subproceso;
+			SET msgSal.sr_subetapa = msgIn.p_Subetapa;
+			SET msgSal.sr_folio = msgIn.p_Folio;
+			SET msgSal.sr_usuario = msgIn.p_Usuario;
+
+			PROPAGATE TO LABEL 'GenArch' MESSAGE OutputRoot FINALIZE NONE DELETE NONE;
+
+		END IF;
+
+		RETURN FALSE;
+	END;
+
+END MODULE;

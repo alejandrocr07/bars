@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ComIbmCompute.msgnode="ComIbmCompute.msgnode" xmlns:ComIbmLabel.msgnode="ComIbmLabel.msgnode" xmlns:ComIbmSOAPEnvelope.msgnode="ComIbmSOAPEnvelope.msgnode" xmlns:ComIbmSOAPExtract.msgnode="ComIbmSOAPExtract.msgnode" xmlns:ComIbmSOAPRequest.msgnode="ComIbmSOAPRequest.msgnode" xmlns:SFTrace.subflow="SFTrace.subflow" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:profuturo_gen_bitacora_sf_guardarBitacora.subflow="profuturo/gen/bitacora/sf/guardarBitacora.subflow"
+    xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="profuturo/gen/reclasificacion/GenerarCTINDI.subflow" nsPrefix="profuturo_gen_reclasificacion_GenerarCTINDI.subflow">
+  <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1" useDefaults="true" udpSupport="true">
+    <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
+    <translation xmi:type="utility:TranslatableString" key="GenerarCTINDI" bundleName="profuturo/gen/reclasificacion/GenerarCTINDI" pluginId="AP_ReclasificacionApovol"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/AP_ReclasificacionApovol/icons/full/obj16/GenerarCTINDI.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/AP_ReclasificacionApovol/icons/full/obj30/GenerarCTINDI.gif"/>
+    <composition>
+      <nodes xmi:type="eflow:FCMSource" xmi:id="InTerminal.Input" location="31,119">
+        <translation xmi:type="utility:TranslatableString" key="InTerminal.Input" bundleName="profuturo/gen/reclasificacion/GenerarCTINDI" pluginId="AP_ReclasificacionApovol"/>
+      </nodes>
+      <nodes xmi:type="ComIbmSOAPExtract.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="132,119">
+        <translation xmi:type="utility:ConstantString" string="CTINDIIn"/>
+      </nodes>
+      <nodes xmi:type="SFTrace.subflow:FCMComposite_1" xmi:id="FCMComposite_1_2" location="242,123">
+        <translation xmi:type="utility:ConstantString" string="GenArcIn"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="359,123" computeExpression="esql://routine/profuturo.gen.reclasificacion#GeneraArchivoCTINDI_Dispatch.Main">
+        <translation xmi:type="utility:ConstantString" string="Dispatch"/>
+      </nodes>
+      <nodes xmi:type="ComIbmLabel.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="18,223" labelName="GenArch">
+        <translation xmi:type="utility:ConstantString" string="GenArch"/>
+      </nodes>
+      <nodes xmi:type="ComIbmSOAPEnvelope.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_5" location="116,223" createEnvelope="true">
+        <translation xmi:type="utility:ConstantString" string="EnvETL"/>
+      </nodes>
+      <nodes xmi:type="SFTrace.subflow:FCMComposite_1" xmi:id="FCMComposite_1_6" location="221,227">
+        <translation xmi:type="utility:ConstantString" string="SFTrace"/>
+      </nodes>
+      <nodes xmi:type="ComIbmSOAPRequest.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_7" location="331,227" wsdlFileName="RECLASIFICACION_APOVOL_1.wsdl" selectedPortType="RECLASIFICACION_APOVOL" selectedBinding="RECLASIFICACION_APOVOLPortBinding" selectedOperation="PANCIN_GAR_CTINDI_0040" selectedPort="RECLASIFICACION_APOVOLPort" targetNamespace="http://RECLASIFICACION_APOVOL.isd.ibm.com/soapoverhttp/" useHTTPTransport="true" webServiceURL="ETLSERVICE" sslProtocol="TLS">
+        <translation xmi:type="utility:ConstantString" string="ETL"/>
+      </nodes>
+      <nodes xmi:type="SFTrace.subflow:FCMComposite_1" xmi:id="FCMComposite_1_8" location="427,227">
+        <translation xmi:type="utility:ConstantString" string="SFTrace1"/>
+      </nodes>
+      <nodes xmi:type="ComIbmSOAPExtract.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_9" location="533,227">
+        <translation xmi:type="utility:ConstantString" string="ExtResp"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_10" location="641,231" computeExpression="esql://routine/profuturo.gen.reclasificacion#GeneraArchivoCTINDI_ValidaResp.Main">
+        <translation xmi:type="utility:ConstantString" string="ValidaResp"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_11" location="467,322" computeExpression="esql://routine/profuturo.gen.reclasificacion#GeneraArchivoCTINDI_Desmarca.Main">
+        <translation xmi:type="utility:ConstantString" string="Desmarca"/>
+      </nodes>
+      <nodes xmi:type="ComIbmLabel.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_12" location="18,316" labelName="Bitacora">
+        <translation xmi:type="utility:ConstantString" string="Bit"/>
+      </nodes>
+      <nodes xmi:type="profuturo_gen_bitacora_sf_guardarBitacora.subflow:FCMComposite_1" xmi:id="FCMComposite_1_13" location="95,316">
+        <translation xmi:type="utility:ConstantString" string="guardarBitacora"/>
+      </nodes>
+      <nodes xmi:type="eflow:FCMSink" xmi:id="OutTerminal.Output1" location="423,124">
+        <translation xmi:type="utility:TranslatableString" key="OutTerminal.RespCTINDI" bundleName="profuturo/gen/reclasificacion/GenerarCTINDI" pluginId="AP_ReclasificacionApovol"/>
+      </nodes>
+      <nodes xmi:type="SFTrace.subflow:FCMComposite_1" xmi:id="FCMComposite_1_14" location="695,323">
+        <translation xmi:type="utility:ConstantString" string="TraceResp"/>
+      </nodes>
+      <nodes xmi:type="SFTrace.subflow:FCMComposite_1" xmi:id="FCMComposite_1_15" location="382,322">
+        <translation xmi:type="utility:ConstantString" string="TraceErr"/>
+      </nodes>
+      <nodes xmi:type="ComIbmSOAPRequest.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_16" location="781,323" wsdlFileName="ConfirmarProcesoSubEtapa_1.wsdl" selectedPortType="ConfirmarProcesoSubEtapaPortType" selectedBinding="soap12ConfirmarProcesoSubEtapaSoapSoapBinding" selectedOperation="confirmarGenerarMovimientos" selectedPort="soap12ConfirmarProcesoSubEtapaSoap" targetNamespace="http://APREAPV/ConfirmarProcesoSubEtapa.tws" useHTTPTransport="true" webServiceURL="BPMConf" sslProtocol="TLS">
+        <translation xmi:type="utility:ConstantString" string="BPM"/>
+      </nodes>
+      <nodes xmi:type="eflow:FCMSink" xmi:id="OutTerminal.Output" location="185,69">
+        <translation xmi:type="utility:TranslatableString" key="OutTerminal.Fault" bundleName="profuturo/gen/reclasificacion/GenerarCTINDI" pluginId="AP_ReclasificacionApovol"/>
+      </nodes>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" targetNode="FCMComposite_1_1" sourceNode="InTerminal.Input" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_2" targetNode="FCMComposite_1_2" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_3" targetNode="FCMComposite_1_3" sourceNode="FCMComposite_1_2" sourceTerminalName="OutTerminal.Output1" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_4" targetNode="FCMComposite_1_5" sourceNode="FCMComposite_1_4" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_5" targetNode="FCMComposite_1_6" sourceNode="FCMComposite_1_5" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_6" targetNode="FCMComposite_1_7" sourceNode="FCMComposite_1_6" sourceTerminalName="OutTerminal.Output1" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_7" targetNode="FCMComposite_1_8" sourceNode="FCMComposite_1_7" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_8" targetNode="FCMComposite_1_9" sourceNode="FCMComposite_1_8" sourceTerminalName="OutTerminal.Output1" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_9" targetNode="FCMComposite_1_10" sourceNode="FCMComposite_1_9" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_13" targetNode="FCMComposite_1_13" sourceNode="FCMComposite_1_12" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_14" targetNode="OutTerminal.Output1" sourceNode="FCMComposite_1_3" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_16" targetNode="FCMComposite_1_15" sourceNode="FCMComposite_1_7" sourceTerminalName="OutTerminal.fault" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_17" targetNode="FCMComposite_1_15" sourceNode="FCMComposite_1_7" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_19" targetNode="FCMComposite_1_11" sourceNode="FCMComposite_1_15" sourceTerminalName="OutTerminal.Output1" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_20" targetNode="FCMComposite_1_14" sourceNode="FCMComposite_1_11" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_21" targetNode="FCMComposite_1_14" sourceNode="FCMComposite_1_10" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_22" targetNode="FCMComposite_1_16" sourceNode="FCMComposite_1_14" sourceTerminalName="OutTerminal.Output1" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_23" targetNode="OutTerminal.Output" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+    </composition>
+    <propertyOrganizer/>
+    <stickyBoard/>
+  </eClassifiers>
+</ecore:EPackage>

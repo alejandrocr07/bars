@@ -1,0 +1,101 @@
+BROKER SCHEMA profuturo.gen.reclasificacion
+
+
+CREATE COMPUTE MODULE CCR_response
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		DECLARE ns  NAMESPACE 'http://cifctrlreclasificacion.webservice.ws.nci.profuturo.mx/';
+		DECLARE tns NAMESPACE 'http://profuturo.mx/iib/Recaudacion/ReclasificacionApovol/v1';
+		
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		DECLARE INDICE INTEGER 1;
+		
+		IF Environment.Variables.peticion THEN
+			
+			CASE Environment.contador
+				WHEN 1  THEN
+					SET Environment.Variables.listaResp[Environment.contador] = InputRoot.SOAP.Body.ns:consultaCargAboPorSubcuentasResponse.ConsultaCargAboPorSubcuentasResponse;
+				WHEN 2  THEN
+					SET Environment.Variables.listaResp[Environment.contador] = InputRoot.SOAP.Body.ns:consultaCargAboPorSubcuentasResponse.ConsultaCargAboPorSubcuentasResponse;
+				WHEN 3 THEN
+					SET Environment.Variables.listaResp[Environment.contador] = InputRoot.SOAP.Body.ns:consultaTotalPorSubcuentasResponse.ConsultaTotalPorSubcuentasResponse;
+				WHEN 4 THEN
+					SET Environment.Variables.listaResp[Environment.contador] = InputRoot.SOAP.Body.ns:consultaOrigDestReclasificacionResponse.ConsultaOrigDestReclasificacionResponse;
+			END CASE;
+			
+			SET Environment.Variables.peticion = FALSE;
+			RETURN FALSE;
+		END IF;
+		
+		
+		SET OutputRoot.SOAP.Body.tns:consultaCargAboPorSubcuentasResponse.ConsultaCargAboPorSubcuentasResponse.errorCode 	= InputRoot.SOAP.Body.ns:consultaTotalReclasificacionResponse.ConsultaTotalReclasificacionResponse.errorCode;
+		SET OutputRoot.SOAP.Body.tns:consultaCargAboPorSubcuentasResponse.ConsultaCargAboPorSubcuentasResponse.errorMessage = InputRoot.SOAP.Body.ns:consultaTotalReclasificacionResponse.ConsultaTotalReclasificacionResponse.errorMessage;
+		SET OutputRoot.SOAP.Body.tns:consultaCargAboPorSubcuentasResponse.ConsultaCargAboPorSubcuentasResponse.errorTrace	= InputRoot.SOAP.Body.ns:consultaTotalReclasificacionResponse.ConsultaTotalReclasificacionResponse.errorTrace;
+		SET OutputRoot.SOAP.Body.tns:consultaCargAboPorSubcuentasResponse.ConsultaCargAboPorSubcuentasResponse.success		= InputRoot.SOAP.Body.ns:consultaTotalReclasificacionResponse.ConsultaTotalReclasificacionResponse.success;
+
+		
+		SET I = 1;
+		SET INDICE = 1;
+		--SET J = CARDINALITY(Environment.Variables.listaResp[INDICE].response[]);
+		SET J = CARDINALITY(Environment.Variables.listaResp[INDICE].response.totalSubcuentas.subCuenta[]);
+		
+			
+		SET OutputRoot.SOAP.Body.tns:consultaCargAboPorSubcuentasResponse.ConsultaCargAboPorSubcuentasResponse.cargoSubcuenta[1]	 = '';		
+		WHILE I <= J DO
+			--SET OutputRoot.SOAP.Body.tns:consultaCargAboPorSubcuentasResponse.ConsultaCargAboPorSubcuentasResponse.cargoSubcuenta[I] = Environment.Variables.listaResp[INDICE].response[I];
+			SET OutputRoot.SOAP.Body.tns:consultaCargAboPorSubcuentasResponse.ConsultaCargAboPorSubcuentasResponse.cargoSubcuenta[I] = Environment.Variables.listaResp[INDICE].response.totalSubcuentas.subCuenta[I];
+			SET I = I + 1;
+		END WHILE; 
+		
+		SET I = 1;
+		SET INDICE = INDICE + 1;
+		SET J = CARDINALITY(Environment.Variables.listaResp[INDICE].response.totalSubcuentas.subCuenta[]);
+		
+			
+		SET OutputRoot.SOAP.Body.tns:consultaCargAboPorSubcuentasResponse.ConsultaCargAboPorSubcuentasResponse.abonoSubcuenta[1]	 = '';
+		WHILE I <= J DO
+			SET OutputRoot.SOAP.Body.tns:consultaCargAboPorSubcuentasResponse.ConsultaCargAboPorSubcuentasResponse.abonoSubcuenta[I] = Environment.Variables.listaResp[INDICE].response.totalSubcuentas.subCuenta[I];
+			SET I = I + 1;
+		END WHILE; 
+	
+		SET I = 1;
+		SET INDICE = INDICE + 1;
+		SET J = CARDINALITY(Environment.Variables.listaResp[INDICE].response.totalSubcuentas.subCuenta[]);
+		
+		SET OutputRoot.SOAP.Body.tns:consultaCargAboPorSubcuentasResponse.ConsultaCargAboPorSubcuentasResponse.totalSubcuenta[1]	 = '';			
+		WHILE I <= J DO
+			SET OutputRoot.SOAP.Body.tns:consultaCargAboPorSubcuentasResponse.ConsultaCargAboPorSubcuentasResponse.totalSubcuenta[I] = Environment.Variables.listaResp[INDICE].response.totalSubcuentas.subCuenta[I];
+			SET I = I + 1;
+		END WHILE; 
+
+		SET I = 1;
+		SET INDICE = INDICE + 1;
+		--SET J = CARDINALITY(Environment.Variables.listaResp[INDICE].response[]);
+		SET J = CARDINALITY(Environment.Variables.listaResp[INDICE].response.listaMovimientos.movimiento[]);
+		
+		SET OutputRoot.SOAP.Body.tns:consultaCargAboPorSubcuentasResponse.ConsultaCargAboPorSubcuentasResponse.OrigenDestino[1]		 = '';	
+		WHILE I <= J DO
+			SET OutputRoot.SOAP.Body.tns:consultaCargAboPorSubcuentasResponse.ConsultaCargAboPorSubcuentasResponse.OrigenDestino[I]	= Environment.Variables.listaResp[INDICE].response.listaMovimientos.movimiento[I];
+			SET I = I + 1;
+		END WHILE; 
+
+		SET OutputRoot.SOAP.Body.tns:consultaCargAboPorSubcuentasResponse.ConsultaCargAboPorSubcuentasResponse.totalReclasificacion	= InputRoot.SOAP.Body.ns:consultaTotalReclasificacionResponse.ConsultaTotalReclasificacionResponse.response;
+		
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I <= J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		SET OutputRoot = InputRoot;
+	END;
+END MODULE;

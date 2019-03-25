@@ -1,0 +1,61 @@
+BROKER SCHEMA profuturo.gen.reclasificacion
+
+CREATE COMPUTE MODULE GenerarMovimientos_ValErr
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		IF Environment.Variables.op = 'GenMov' THEN
+			SET Environment.Variables.BanErr = TRUE;
+
+			SET OutputRoot = NULL;
+			CREATE FIELD OutputRoot.XMLNSC.bitacoraBean;
+			DECLARE ref_bit REFERENCE TO OutputRoot.XMLNSC.bitacoraBean;
+			DECLARE ref_msgIn REFERENCE TO Environment.Variables.MsgIn;
+
+			SET ref_bit.folio = ref_msgIn.*:*.p_Folio;
+			SET ref_bit.idEstatus = ref_msgIn.*:*.p_EstatusCan;
+			SET ref_bit.idEtapa = ref_msgIn.*:*.p_Etapa;
+			SET ref_bit.idResultado = ref_msgIn.*:*.p_Resultado;
+			SET ref_bit.idSubetapa = ref_msgIn.*:*.p_Subetapa;
+			SET ref_bit.idSubproceso = ref_msgIn.*:*.p_Subproceso;
+			SET ref_bit.usuario = ref_msgIn.*:*.p_Usuario;
+			PROPAGATE TO LABEL 'Bitacora_Gen_Mov' MESSAGE OutputRoot FINALIZE NONE DELETE NONE;
+
+		ELSEIF Environment.Variables.op = 'ServCom' THEN
+
+			SET OutputRoot = NULL;
+			CREATE FIELD OutputRoot.XMLNSC.bitacoraBean;
+			DECLARE ref_bit REFERENCE TO OutputRoot.XMLNSC.bitacoraBean;
+			DECLARE ref_msgIn REFERENCE TO Environment.Variables.MsgIn;
+
+			SET ref_bit.folio = ref_msgIn.*:*.p_Folio;
+			SET ref_bit.idEstatus = ref_msgIn.*:*.p_EstatusCan;
+			SET ref_bit.idEtapa = ref_msgIn.*:*.p_Etapa;
+			SET ref_bit.idResultado = ref_msgIn.*:*.p_Resultado;
+			SET ref_bit.idSubetapa = ref_msgIn.*:*.p_Subetapa;
+			SET ref_bit.idSubproceso = ref_msgIn.*:*.p_Subproceso;
+			SET ref_bit.usuario = ref_msgIn.*:*.p_Usuario;
+			PROPAGATE TO LABEL 'Bitacora_Gen_Mov' MESSAGE OutputRoot FINALIZE NONE DELETE NONE;
+
+		END IF;
+
+		SET OutputRoot = NULL;
+
+		DECLARE ref_msgIn REFERENCE TO Environment.Variables.MsgIn;
+		SET OutputRoot.XMLNSC.ns7:confirmarGenerarMovimientos.ns7:claveConfirmacion = ref_msgIn.*:*.claveConfirmacion;
+		SET OutputRoot.XMLNSC.ns7:confirmarGenerarMovimientos.ns7:folioLote = ref_msgIn.*:*.p_Folio;
+		SET OutputRoot.XMLNSC.ns7:confirmarGenerarMovimientos.ns7:subEtapa = ref_msgIn.*:*.p_Subetapa;
+		SET OutputRoot.XMLNSC.ns7:confirmarGenerarMovimientos.ns7:idEstatus = ref_msgIn.*:*.p_Estatus_fin;
+		IF Environment.Variables.op = 'ServCom' THEN
+			SET OutputRoot.XMLNSC.ns7:confirmarGenerarMovimientos.ns7:nombreServicioError = 'PANCIN_GAM_0030';
+		ELSEIF Environment.Variables.op = 'GenMov' THEN
+			SET OutputRoot.XMLNSC.ns7:confirmarGenerarMovimientos.ns7:nombreServicioError = 'PANCIN_MOV_GEN_MOV_0020';
+		END IF;
+		SET OutputRoot.XMLNSC.ns7:confirmarGenerarMovimientos.ns7:capaError = 'ETL';
+		SET OutputRoot.XMLNSC.ns7:confirmarGenerarMovimientos.ns7:descripcionError = 'No se obtuvo respuesta del servicio';
+		SET OutputRoot.XMLNSC.ns7:confirmarGenerarMovimientos.ns7:success = FALSE;
+
+		PROPAGATE TO TERMINAL 'out' MESSAGE OutputRoot FINALIZE NONE DELETE NONE;
+
+		RETURN FALSE;
+	END;
+END MODULE;

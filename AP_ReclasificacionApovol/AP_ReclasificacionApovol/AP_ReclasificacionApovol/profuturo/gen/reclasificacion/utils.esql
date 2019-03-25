@@ -1,0 +1,44 @@
+BROKER SCHEMA profuturo.gen.reclasificacion
+
+CREATE PROCEDURE bitacoraMsg (IN msgIn REFERENCE, INOUT refBitacora REFERENCE, IN orig CHARACTER)
+BEGIN
+
+	CREATE FIELD refBitacora.BitacoraIn.XMLNSC.ns35:guardarBitacora.bitacoraBean;
+	DECLARE ref_bit REFERENCE TO refBitacora.BitacoraIn.XMLNSC.ns35:guardarBitacora.bitacoraBean;
+
+	IF orig = 'GenMovs' THEN
+		SET ref_bit.folio 			= msgIn.*:*.p_Folio;
+		SET ref_bit.idEstatus 		= msgIn.*:*.p_Estatus;
+		SET ref_bit.idEtapa 		= msgIn.*:*.p_Etapa;
+		SET ref_bit.idResultado 	= msgIn.*:*.p_Resultado;
+		SET ref_bit.idSubetapa 		= msgIn.*:*.p_Subetapa;
+		SET ref_bit.idSubproceso 	= msgIn.*:*.p_Subproceso;
+		SET ref_bit.usuario 		= msgIn.*:*.p_Usuario;
+	ELSEIF orig = 'CTINDI' THEN
+		SET ref_bit.folio 			= msgIn.*:*.p_Folio;
+		SET ref_bit.idEstatus 		= msgIn.*:*.p_Estatus;
+		SET ref_bit.idEtapa 		= msgIn.*:*.p_Etapa;
+		SET ref_bit.idResultado 	= msgIn.*:*.p_Resultado;
+		SET ref_bit.idSubetapa 		= msgIn.*:*.p_Subetapa;
+		SET ref_bit.idSubproceso 	= msgIn.*:*.p_Subproceso;
+		SET ref_bit.usuario 		= msgIn.*:*.p_Usuario;	
+	ELSEIF orig = 'DES_IN' THEN
+		SET ref_bit.folio 			= msgIn.*:*.p_Folio;
+		SET ref_bit.idEstatus 		= msgIn.*:*.p_Estatus_ini;
+		SET ref_bit.idEtapa 		= msgIn.*:*.p_Etapa;
+		SET ref_bit.idResultado 	= msgIn.*:*.p_Resultado;
+		SET ref_bit.idSubetapa 		= msgIn.*:*.p_Subetapa;
+		SET ref_bit.idSubproceso 	= msgIn.*:*.p_Subproceso;
+		SET ref_bit.usuario 		= msgIn.*:*.p_Usuario;
+	ELSEIF orig = 'DES_OUT' THEN
+		SET ref_bit.folio 			= msgIn.*:*.p_Folio;
+		SET ref_bit.idEstatus 		= msgIn.*:*.p_Estatus_fin;
+		SET ref_bit.idEtapa 		= msgIn.*:*.p_Etapa;
+		SET ref_bit.idResultado 	= msgIn.*:*.p_Resultado;
+		SET ref_bit.idSubetapa 		= msgIn.*:*.p_Subetapa;
+		SET ref_bit.idSubproceso 	= msgIn.*:*.p_Subproceso;
+		SET ref_bit.usuario 		= msgIn.*:*.p_Usuario;
+
+	END IF;
+
+END;

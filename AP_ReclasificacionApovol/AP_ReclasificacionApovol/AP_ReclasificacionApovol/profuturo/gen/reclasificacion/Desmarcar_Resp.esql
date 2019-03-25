@@ -1,0 +1,9 @@
+BROKER SCHEMA profuturo.gen.reclasificacion
+
+
+CREATE COMPUTE MODULE Desmarcar_Resp
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		RETURN FALSE;
+	END;
+END MODULE;

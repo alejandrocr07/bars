@@ -1,0 +1,56 @@
+BROKER SCHEMA profuturo.gen.reclasificacion
+DECLARE ns7 NAMESPACE 'http://APREAPV/ConfirmarProcesoSubEtapa.tws';
+DECLARE ns11 NAMESPACE 'http://RECLASIFICACION_APOVOL.isd.ibm.com/soapoverhttp/';
+DECLARE ns10 NAMESPACE 'http://profuturo.mx/iib/Recaudacion/ReclasificacionApovol/v1';
+DECLARE ns85 NAMESPACE 'http://bitacora.webservice.ws.nci.profuturo.mx/';
+
+
+CREATE COMPUTE MODULE requestDesmarcar
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN		
+
+		SET OutputRoot.XMLNSC.ns10:PANCIN_DES_0060Response.success = 'Servicio recibido con exito';
+		PROPAGATE TO TERMINAL 'out' MESSAGE OutputRoot FINALIZE NONE DELETE NONE;
+
+		SET Environment.Variables.MsgIn = InputRoot.XMLNSC.ns10:PANCIN_DES_0060;
+		DECLARE ref_msgIn REFERENCE TO InputRoot.XMLNSC.ns10:PANCIN_DES_0060;
+
+		SET OutputRoot = NULL;
+		SET OutputRoot.XMLNSC.bitacoraBean.folio = ref_msgIn.p_Folio;
+		SET OutputRoot.XMLNSC.bitacoraBean.idEstatus = ref_msgIn.p_Estatus_ini;
+		SET OutputRoot.XMLNSC.bitacoraBean.idEtapa = ref_msgIn.p_Etapa;
+		SET OutputRoot.XMLNSC.bitacoraBean.idResultado = ref_msgIn.p_Resultado;
+		SET OutputRoot.XMLNSC.bitacoraBean.idSubetapa = ref_msgIn.p_Subetapa;
+		SET OutputRoot.XMLNSC.bitacoraBean.idSubproceso = ref_msgIn.p_Subproceso;
+		SET OutputRoot.XMLNSC.bitacoraBean.usuario = ref_msgIn.p_Usuario;
+		PROPAGATE TO LABEL 'Bitacora_Des' MESSAGE OutputRoot FINALIZE NONE DELETE NONE;		
+
+
+		SET OutputRoot = NULL;
+
+		SET OutputRoot.SOAP.Body.ns11:PANCIN_DES_0060.sr_folio = ref_msgIn.p_Folio;
+		SET OutputRoot.SOAP.Body.ns11:PANCIN_DES_0060.sr_proceso = ref_msgIn.p_Proceso;
+		SET OutputRoot.SOAP.Body.ns11:PANCIN_DES_0060.sr_subetapa = ref_msgIn.p_Subetapa;
+		SET OutputRoot.SOAP.Body.ns11:PANCIN_DES_0060.sr_subproceso = ref_msgIn.p_Subproceso;
+		SET OutputRoot.SOAP.Body.ns11:PANCIN_DES_0060.sr_usuario = ref_msgIn.p_Usuario;
+		PROPAGATE TO TERMINAL 'out1';
+
+		SET OutputRoot = NULL;
+
+		RETURN FALSE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		SET OutputRoot = InputRoot;
+	END;
+END MODULE;

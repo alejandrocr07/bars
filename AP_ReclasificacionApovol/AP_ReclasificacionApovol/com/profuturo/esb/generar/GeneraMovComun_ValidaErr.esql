@@ -1,0 +1,14 @@
+BROKER SCHEMA com.profuturo.esb.generar
+
+
+CREATE COMPUTE MODULE GeneraMovComun_ValidaErr
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		IF Environment.Variables.Op = 'Previo' THEN
+			SET Environment.Variables.BanErr = TRUE;
+		ELSEIF Environment.Variables.Op = 'Comun' THEN
+			SET Environment.Variables.BanErrP = TRUE;
+		END IF;
+		RETURN FALSE;
+	END;
+END MODULE;

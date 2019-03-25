@@ -1,0 +1,33 @@
+BROKER SCHEMA profuturo.gen.reclasificacion
+
+CREATE COMPUTE MODULE Desmarcar_ValErr
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		DECLARE ref_msgIn REFERENCE TO Environment.Variables.MsgIn;
+		
+		SET OutputRoot.XMLNSC.bitacoraBean.folio 			= ref_msgIn.p_Folio;
+		SET OutputRoot.XMLNSC.bitacoraBean.idEstatus 		= ref_msgIn.p_Estatus_fin;
+		SET OutputRoot.XMLNSC.bitacoraBean.idEtapa 		= ref_msgIn.p_Etapa;
+		SET OutputRoot.XMLNSC.bitacoraBean.idResultado 	= ref_msgIn.p_Resultado;
+		SET OutputRoot.XMLNSC.bitacoraBean.idSubetapa 		= ref_msgIn.p_Subetapa;
+		SET OutputRoot.XMLNSC.bitacoraBean.idSubproceso 	= ref_msgIn.p_Subproceso;
+		SET OutputRoot.XMLNSC.bitacoraBean.usuario 		= ref_msgIn.p_Usuario;
+		
+		PROPAGATE TO LABEL 'Bitacora_Des' MESSAGE OutputRoot FINALIZE NONE DELETE NONE;
+		
+		SET OutputRoot = NULL;
+		
+		SET OutputRoot.XMLNSC.ns7:confirmarDesmarcNCI.ns7:claveConfirmacion	= ref_msgIn.claveConfirmacion;
+		SET OutputRoot.XMLNSC.ns7:confirmarDesmarcNCI.ns7:folioLote		= ref_msgIn.p_Folio;
+		SET OutputRoot.XMLNSC.ns7:confirmarDesmarcNCI.ns7:subEtapa		= ref_msgIn.p_Subetapa;
+		SET OutputRoot.XMLNSC.ns7:confirmarDesmarcNCI.ns7:idEstatus 	= ref_msgIn.p_Estatus_fin;
+		SET OutputRoot.XMLNSC.ns7:confirmarDesmarcNCI.ns7:nombreServicioError		= 'PANCIN_DES_0060';
+		SET OutputRoot.XMLNSC.ns7:confirmarDesmarcNCI.ns7:capaError 	= 'ETL';
+		SET OutputRoot.XMLNSC.ns7:confirmarDesmarcNCI.ns7:descripcionError 		= 'No se obtuvo respuesta del servicio';
+		SET OutputRoot.XMLNSC.ns7:confirmarDesmarcNCI.ns7:success 		= FALSE;
+		
+		PROPAGATE TO TERMINAL 'out' MESSAGE OutputRoot FINALIZE NONE DELETE NONE;
+		RETURN FALSE;
+	END;
+END MODULE;

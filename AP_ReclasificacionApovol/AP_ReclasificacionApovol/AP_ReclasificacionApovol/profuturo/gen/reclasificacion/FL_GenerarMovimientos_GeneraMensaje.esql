@@ -1,0 +1,69 @@
+BROKER SCHEMA profuturo.gen.reclasificacion
+
+DECLARE ns74 NAMESPACE 'http://RECLASIFICACION_APOVOL.isd.ibm.com/soapoverhttp/';
+DECLARE ns19 NAMESPACE 'http://PANCIN_0030.MITC.isd.ibm.com/soapoverhttp/';
+DECLARE ns79 NAMESPACE 'http://profuturo.mx/iib/Recaudacion/ReclasificacionApovol/v1';
+--DECLARE ns NAMESPACE 'http://bitacora.webservice.ws.nci.profuturo.mx/';
+
+CREATE COMPUTE MODULE FL_GenerarMovimientos_GeneraMensaje
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+
+
+		SET OutputRoot = NULL;
+		SET OutputRoot.XMLNSC.ns79:PANCIN_MOV_GEN_MOV_0020Response.success = 'Servicio recibido con exito';
+
+		PROPAGATE TO TERMINAL 'out' MESSAGE OutputRoot FINALIZE NONE DELETE NONE;
+
+		SET OutputRoot = NULL;
+		SET Environment.Variables.MsgIn = InputRoot.XMLNSC;
+		CREATE FIELD OutputRoot.XMLNSC.bitacoraBean;
+		DECLARE ref_bit REFERENCE TO OutputRoot.XMLNSC.bitacoraBean;
+		DECLARE ref_msgIn REFERENCE TO InputRoot.XMLNSC;
+
+		SET ref_bit.folio = ref_msgIn.*:*.p_Folio;
+		SET ref_bit.idEstatus = ref_msgIn.*:*.p_EstatusIni;
+		SET ref_bit.idEtapa = ref_msgIn.*:*.p_Etapa;
+		SET ref_bit.idResultado = ref_msgIn.*:*.p_Resultado;
+		SET ref_bit.idSubetapa = ref_msgIn.*:*.p_Subetapa;
+		SET ref_bit.idSubproceso = ref_msgIn.*:*.p_Subproceso;
+		SET ref_bit.usuario = ref_msgIn.*:*.p_Usuario;
+
+		PROPAGATE TO LABEL 'Bitacora_Gen_Mov' MESSAGE OutputRoot FINALIZE NONE DELETE NONE;
+
+		SET OutputRoot = NULL;
+		SET Environment.Variables.op = 'GenMov';
+		SET Environment.Variables.BanErr = FALSE;
+
+		SET OutputRoot.XMLNSC.ns74:PANCIN_MOV_GEN_MOV_0020.sr_folio = InputRoot.XMLNSC.ns79:PANCIN_MOV_GEN_MOV_0020.p_Folio;
+		SET OutputRoot.XMLNSC.ns74:PANCIN_MOV_GEN_MOV_0020.sr_proceso = InputRoot.XMLNSC.ns79:PANCIN_MOV_GEN_MOV_0020.p_Proceso;
+		SET OutputRoot.XMLNSC.ns74:PANCIN_MOV_GEN_MOV_0020.sr_subproceso = InputRoot.XMLNSC.ns79:PANCIN_MOV_GEN_MOV_0020.p_Subproceso;
+		SET OutputRoot.XMLNSC.ns74:PANCIN_MOV_GEN_MOV_0020.sr_subetapa = InputRoot.XMLNSC.ns79:PANCIN_MOV_GEN_MOV_0020.p_Subetapa;
+		SET OutputRoot.XMLNSC.ns74:PANCIN_MOV_GEN_MOV_0020.sr_id_instancia = InputRoot.XMLNSC.ns79:PANCIN_MOV_GEN_MOV_0020.p_Instancia;
+		SET OutputRoot.XMLNSC.ns74:PANCIN_MOV_GEN_MOV_0020.sr_fecha_acc = InputRoot.XMLNSC.ns79:PANCIN_MOV_GEN_MOV_0020.p_Fecha_acc;
+		SET OutputRoot.XMLNSC.ns74:PANCIN_MOV_GEN_MOV_0020.sr_fecha_liq = InputRoot.XMLNSC.ns79:PANCIN_MOV_GEN_MOV_0020.p_Fecha_liq;
+		SET OutputRoot.XMLNSC.ns74:PANCIN_MOV_GEN_MOV_0020.sr_reproceso = InputRoot.XMLNSC.ns79:PANCIN_MOV_GEN_MOV_0020.p_Reproceso;
+		SET OutputRoot.XMLNSC.ns74:PANCIN_MOV_GEN_MOV_0020.sr_usuario = InputRoot.XMLNSC.ns79:PANCIN_MOV_GEN_MOV_0020.p_Usuario;
+
+		PROPAGATE TO LABEL 'GenMovs' MESSAGE OutputRoot FINALIZE NONE DELETE NONE;
+
+		IF Environment.Variables.BanErr = FALSE THEN
+			SET OutputRoot = NULL;
+			SET Environment.Variables.op = 'ServCom';
+
+			SET OutputRoot.XMLNSC.ns19:PANCIN_GAM_0030.sr_folio = InputRoot.XMLNSC.ns79:PANCIN_MOV_GEN_MOV_0020.p_Folio;
+			SET OutputRoot.XMLNSC.ns19:PANCIN_GAM_0030.sr_proceso = InputRoot.XMLNSC.ns79:PANCIN_MOV_GEN_MOV_0020.p_Proceso;
+			SET OutputRoot.XMLNSC.ns19:PANCIN_GAM_0030.sr_subproceso = InputRoot.XMLNSC.ns79:PANCIN_MOV_GEN_MOV_0020.p_Subproceso;
+			SET OutputRoot.XMLNSC.ns19:PANCIN_GAM_0030.sr_subetapa = InputRoot.XMLNSC.ns79:PANCIN_MOV_GEN_MOV_0020.p_Subetapa;
+--			SET OutputRoot.XMLNSC.ns19:PANCIN_GAM_0030.sr_id_instancia = InputRoot.XMLNSC.ns79:PANCIN_MOV_GEN_MOV_0020.p_Instancia;
+			SET OutputRoot.XMLNSC.ns19:PANCIN_GAM_0030.sr_fecha_acc = InputRoot.XMLNSC.ns79:PANCIN_MOV_GEN_MOV_0020.p_Fecha_acc;
+			SET OutputRoot.XMLNSC.ns19:PANCIN_GAM_0030.sr_fecha_liq = InputRoot.XMLNSC.ns79:PANCIN_MOV_GEN_MOV_0020.p_Fecha_liq;
+			SET OutputRoot.XMLNSC.ns19:PANCIN_GAM_0030.sr_reproceso = InputRoot.XMLNSC.ns79:PANCIN_MOV_GEN_MOV_0020.p_Reproceso;
+			SET OutputRoot.XMLNSC.ns19:PANCIN_GAM_0030.sr_tipo_mov = InputRoot.XMLNSC.ns79:PANCIN_MOV_GEN_MOV_0020.p_tipo_mov;
+
+			PROPAGATE TO LABEL 'ServCom' MESSAGE OutputRoot FINALIZE NONE DELETE NONE;
+		END IF;
+
+		RETURN FALSE;
+	END;
+END MODULE;

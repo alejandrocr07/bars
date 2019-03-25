@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ComIbmCompute.msgnode="ComIbmCompute.msgnode" xmlns:ComIbmLabel.msgnode="ComIbmLabel.msgnode" xmlns:ComIbmSOAPRequest.msgnode="ComIbmSOAPRequest.msgnode" xmlns:ComIbmTrace.msgnode="ComIbmTrace.msgnode" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:profuturo_gen_bitacora_sf_guardarBitacora.subflow="profuturo/gen/bitacora/sf/guardarBitacora.subflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility"
+    nsURI="profuturo/gen/reclasificacion/ActualizarIndicadores.subflow" nsPrefix="profuturo_gen_reclasificacion_ActualizarIndicadores.subflow">
+  <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1" useDefaults="true" udpSupport="true">
+    <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
+    <translation xmi:type="utility:TranslatableString" key="ActualizarIndicadores" bundleName="profuturo/gen/reclasificacion/ActualizarIndicadores" pluginId="AP_ReclasificacionApovol"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/AP_ReclasificacionApovol/icons/full/obj16/ActualizarIndicadores.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/AP_ReclasificacionApovol/icons/full/obj30/ActualizarIndicadores.gif"/>
+    <composition>
+      <nodes xmi:type="eflow:FCMSource" xmi:id="InTerminal.Input" location="67,151">
+        <translation xmi:type="utility:TranslatableString" key="InTerminal.Input" bundleName="profuturo/gen/reclasificacion/ActualizarIndicadores" pluginId="AP_ReclasificacionApovol"/>
+      </nodes>
+      <nodes xmi:type="eflow:FCMSink" xmi:id="OutTerminal.Output" location="409,223">
+        <translation xmi:type="utility:TranslatableString" key="OutTerminal.Output" bundleName="profuturo/gen/reclasificacion/ActualizarIndicadores" pluginId="AP_ReclasificacionApovol"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="192,151" computeExpression="esql://routine/profuturo.gen.reclasificacion#requestActIndicadores.Main">
+        <translation xmi:type="utility:ConstantString" string="requestAI"/>
+      </nodes>
+      <nodes xmi:type="ComIbmSOAPRequest.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="404,152" wsdlFileName="RECLASIFICACION_APOVOL_1.wsdl" selectedPortType="RECLASIFICACION_APOVOL" selectedBinding="RECLASIFICACION_APOVOLPortBinding" selectedOperation="PANCIN_AIN_0010" selectedPort="RECLASIFICACION_APOVOLPort" targetNamespace="http://RECLASIFICACION_APOVOL.isd.ibm.com/soapoverhttp/" useHTTPTransport="true" webServiceURL="ETLSERVICE" sslProtocol="TLS" parserXmlnscBuildTreeUsingXMLSchema="false"
+          validateMaster="none">
+        <translation xmi:type="utility:ConstantString" string="ETL AI"/>
+      </nodes>
+      <nodes xmi:type="eflow:FCMSink" xmi:id="OutTerminal.Output1" location="500,78">
+        <translation xmi:type="utility:TranslatableString" key="OutTerminal.Failure" bundleName="profuturo/gen/reclasificacion/ActualizarIndicadores" pluginId="AP_ReclasificacionApovol"/>
+      </nodes>
+      <nodes xmi:type="eflow:FCMSink" xmi:id="OutTerminal.Output2" location="496,221">
+        <translation xmi:type="utility:TranslatableString" key="OutTerminal.Fault" bundleName="profuturo/gen/reclasificacion/ActualizarIndicadores" pluginId="AP_ReclasificacionApovol"/>
+      </nodes>
+      <nodes xmi:type="ComIbmLabel.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="65,241" labelName="Bitacora_Ain">
+        <translation xmi:type="utility:ConstantString" string="Bitacora"/>
+      </nodes>
+      <nodes xmi:type="profuturo_gen_bitacora_sf_guardarBitacora.subflow:FCMComposite_1" xmi:id="FCMComposite_1_5" location="172,241">
+        <translation xmi:type="utility:ConstantString" string="guardarBitacora"/>
+      </nodes>
+      <nodes xmi:type="ComIbmTrace.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_6" location="498,152">
+        <translation xmi:type="utility:ConstantString" string="Trace"/>
+      </nodes>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_4" targetNode="OutTerminal.Output1" sourceNode="FCMComposite_1_2" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_5" targetNode="OutTerminal.Output2" sourceNode="FCMComposite_1_2" sourceTerminalName="OutTerminal.fault" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_6" targetNode="OutTerminal.Output1" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_3" targetNode="FCMComposite_1_5" sourceNode="FCMComposite_1_4" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_7" targetNode="OutTerminal.Output" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_8" targetNode="FCMComposite_1_2" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.out1" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_9" targetNode="FCMComposite_1_6" sourceNode="FCMComposite_1_2" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" targetNode="FCMComposite_1_1" sourceNode="InTerminal.Input" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+    </composition>
+    <propertyOrganizer/>
+    <stickyBoard/>
+  </eClassifiers>
+</ecore:EPackage>

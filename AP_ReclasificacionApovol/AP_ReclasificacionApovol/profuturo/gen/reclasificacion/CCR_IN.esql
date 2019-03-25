@@ -1,0 +1,70 @@
+BROKER SCHEMA profuturo.gen.reclasificacion
+
+
+CREATE COMPUTE MODULE CCR_IN
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		SET Environment.contador  = 1;
+		DECLARE ns 			NAMESPACE 'http://profuturo.mx/iib/Recaudacion/ReclasificacionApovol/v1';
+		DECLARE tns 		NAMESPACE 'http://cifctrlreclasificacion.webservice.ws.nci.profuturo.mx/';
+		DECLARE objtnsReq 	CHARACTER '';
+		DECLARE objReq 		CHARACTER '';
+		DECLARE objMW 		CHARACTER '';
+		SET OutputLocalEnvironment						= InputLocalEnvironment;
+		SET OutputRoot.SOAP.Context						= InputLocalEnvironment.SOAP.Envelope.SOAP.Context;
+		SET OutputRoot.SOAP.Header						= InputLocalEnvironment.SOAP.Envelope.SOAP.Header;
+		SET objtnsReq 									= FIELDNAMESPACE(InputRoot.XMLNSC.*[>]);
+		SET objReq 										= FIELDNAME(InputRoot.XMLNSC.*[>]);
+		
+		SET OutputRoot.SOAP.Body.tns:consultaCargAboPorSubcuentas.request.folioReclasificacion 		= Environment.valReq.folioReclasificacion;
+		SET OutputRoot.SOAP.Body.tns:consultaCargAboPorSubcuentas.request.tipoMov 					= Environment.cve_cargo;
+		
+		SET Environment.Variables.peticion = TRUE;
+		
+		PROPAGATE TO TERMINAL 'out1';
+
+		SET OutputRoot.SOAP.Body.tns:consultaCargAboPorSubcuentas.request.folioReclasificacion 		= Environment.valReq.folioReclasificacion;
+		SET OutputRoot.SOAP.Body.tns:consultaCargAboPorSubcuentas.request.tipoMov 					= Environment.cve_abono;
+
+		SET Environment.contador = Environment.contador + 1;
+		SET Environment.Variables.peticion = TRUE;
+		
+		PROPAGATE TO TERMINAL 'out1';
+
+		SET OutputRoot.SOAP.Body.tns:consultaTotalPorSubcuentas.request.folioReclasificacion 		= Environment.valReq.folioReclasificacion;
+
+		SET Environment.contador = Environment.contador + 1;
+		SET Environment.Variables.peticion = TRUE;
+		
+		PROPAGATE TO TERMINAL 'out1';
+
+		SET OutputRoot.SOAP.Body.tns:consultaOrigDestReclasificacion.request.folioReclasificacion 	= Environment.valReq.folioReclasificacion;
+
+		SET Environment.contador = Environment.contador + 1;
+		SET Environment.Variables.peticion = TRUE;
+		
+		PROPAGATE TO TERMINAL 'out1';
+
+		SET OutputRoot.SOAP.Body.tns:consultaTotalReclasificacion.request.folioReclasificacion		= Environment.valReq.folioReclasificacion;
+
+		SET Environment.contador = Environment.contador + 1;
+		SET Environment.Variables.peticion = FALSE;
+		
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		SET OutputRoot = InputRoot;
+	END;
+END MODULE;

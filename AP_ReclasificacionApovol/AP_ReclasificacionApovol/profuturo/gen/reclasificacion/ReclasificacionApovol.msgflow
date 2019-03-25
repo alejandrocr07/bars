@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ComIbmLabel.msgnode="ComIbmLabel.msgnode" xmlns:ComIbmSOAPExtract.msgnode="ComIbmSOAPExtract.msgnode" xmlns:ComIbmSOAPInput.msgnode="ComIbmSOAPInput.msgnode" xmlns:ComIbmSOAPReply.msgnode="ComIbmSOAPReply.msgnode" xmlns:SFHandleError.subflow="SFHandleError.subflow" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:profuturo_gen_reclasificacion_Acreditar.subflow="profuturo/gen/reclasificacion/Acreditar.subflow"
+    xmlns:profuturo_gen_reclasificacion_ActualizarIndicadores.subflow="profuturo/gen/reclasificacion/ActualizarIndicadores.subflow" xmlns:profuturo_gen_reclasificacion_CifrasControl.subflow="profuturo/gen/reclasificacion/CifrasControl.subflow" xmlns:profuturo_gen_reclasificacion_ConformaLote.subflow="profuturo/gen/reclasificacion/ConformaLote.subflow" xmlns:profuturo_gen_reclasificacion_Desmarcar.subflow="profuturo/gen/reclasificacion/Desmarcar.subflow" xmlns:profuturo_gen_reclasificacion_GenerarCTINDI.subflow="profuturo/gen/reclasificacion/GenerarCTINDI.subflow"
+    xmlns:profuturo_gen_reclasificacion_GenerarDesmarca.subflow="profuturo/gen/reclasificacion/GenerarDesmarca.subflow" xmlns:profuturo_gen_reclasificacion_GenerarMovimientos.subflow="profuturo/gen/reclasificacion/GenerarMovimientos.subflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="profuturo/gen/reclasificacion/ReclasificacionApovol.msgflow" nsPrefix="profuturo_gen_reclasificacion_ReclasificacionApovol.msgflow">
+  <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1">
+    <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
+    <translation xmi:type="utility:TranslatableString" key="ReclasificacionApovol" bundleName="profuturo/gen/reclasificacion/ReclasificacionApovol" pluginId="AP_ReclasificacionApovol"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/AP_ReclasificacionApovol/icons/full/obj16/ReclasificacionApovol.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/AP_ReclasificacionApovol/icons/full/obj30/ReclasificacionApovol.gif"/>
+    <composition>
+      <nodes xmi:type="ComIbmSOAPExtract.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="165,32" removeEnvelope="false" routeToOperation="true">
+        <translation xmi:type="utility:ConstantString" string="Extract"/>
+      </nodes>
+      <nodes xmi:type="ComIbmLabel.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="78,129" labelName="PANCIN_ACR_0030">
+        <translation xmi:type="utility:ConstantString" string="acreditarMovimientos"/>
+      </nodes>
+      <nodes xmi:type="ComIbmLabel.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="49,196" labelName="consultaCargAboPorSubcuentasRequest">
+        <translation xmi:type="utility:ConstantString" string="consultaCargAboPorSubcuentas"/>
+      </nodes>
+      <nodes xmi:type="ComIbmLabel.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_5" location="96,264" labelName="PANCIN_CFR_CCR_0010">
+        <translation xmi:type="utility:ConstantString" string="conformarLote"/>
+      </nodes>
+      <nodes xmi:type="ComIbmLabel.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_6" location="88,331" labelName="PANCIN_MOV_GEN_MOV_0020">
+        <translation xmi:type="utility:ConstantString" string="GENERAR_MOVS"/>
+      </nodes>
+      <nodes xmi:type="ComIbmLabel.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_7" location="60,396" labelName="PANCIN_GAR_CTINDI_0040">
+        <translation xmi:type="utility:ConstantString" string="PANCIN_GAR_CTINDI_0040"/>
+      </nodes>
+      <nodes xmi:type="profuturo_gen_reclasificacion_Acreditar.subflow:FCMComposite_1" xmi:id="FCMComposite_1_8" location="333,129">
+        <translation xmi:type="utility:ConstantString" string="Acreditar"/>
+      </nodes>
+      <nodes xmi:type="ComIbmSOAPReply.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_9" location="730,593">
+        <translation xmi:type="utility:ConstantString" string="SOAP Reply"/>
+      </nodes>
+      <nodes xmi:type="SFHandleError.subflow:FCMComposite_1" xmi:id="FCMComposite_1_10" location="730,28">
+        <translation xmi:type="utility:ConstantString" string="SFHandleError"/>
+      </nodes>
+      <nodes xmi:type="profuturo_gen_reclasificacion_GenerarMovimientos.subflow:FCMComposite_1" xmi:id="FCMComposite_1_14" location="308,331">
+        <translation xmi:type="utility:ConstantString" string="GenerarMovimientos"/>
+      </nodes>
+      <nodes xmi:type="profuturo_gen_reclasificacion_GenerarCTINDI.subflow:FCMComposite_1" xmi:id="FCMComposite_1_15" location="323,396">
+        <translation xmi:type="utility:ConstantString" string="GenerarCTINDI"/>
+      </nodes>
+      <nodes xmi:type="ComIbmSOAPInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="55,36" wsdlFileName="ReclasificacionApovolService.wsdl" selectedPortType="ReclaApovolPortType" selectedBinding="ReclaApovolSOAP_HTTP_Binding" selectedPort="ReclasificacionApovolSOAP" targetNamespace="http://profuturo.mx/iib/Recaudacion/ReclasificacionApovol/v1" useHTTPTransport="true" urlSelector="/iib/recaudacion/reclasificacionapovol/v1" allowQueryWSDL="true">
+        <translation xmi:type="utility:ConstantString" string="SOAP Input"/>
+      </nodes>
+      <nodes xmi:type="profuturo_gen_reclasificacion_CifrasControl.subflow:FCMComposite_1" xmi:id="FCMComposite_1_11" location="377,267">
+        <translation xmi:type="utility:ConstantString" string="CifrasControl"/>
+      </nodes>
+      <nodes xmi:type="profuturo_gen_reclasificacion_ConformaLote.subflow:FCMComposite_1" xmi:id="FCMComposite_1_12" location="323,196">
+        <translation xmi:type="utility:ConstantString" string="ConformaLote"/>
+      </nodes>
+      <nodes xmi:type="ComIbmLabel.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_16" location="70,466" labelName="PANCIN_GAR_DES_0050">
+        <translation xmi:type="utility:ConstantString" string="PANCIN_GAR_DES_0050"/>
+      </nodes>
+      <nodes xmi:type="ComIbmLabel.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_18" location="85,533" labelName="PANCIN_DES_0060">
+        <translation xmi:type="utility:ConstantString" string="PANCIN_DES_0060"/>
+      </nodes>
+      <nodes xmi:type="ComIbmLabel.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_20" location="86,601" labelName="PANCIN_AIN_0010">
+        <translation xmi:type="utility:ConstantString" string="PANCIN_AIN_0010"/>
+      </nodes>
+      <nodes xmi:type="profuturo_gen_reclasificacion_ActualizarIndicadores.subflow:FCMComposite_1" xmi:id="FCMComposite_1_13" location="301,601">
+        <translation xmi:type="utility:ConstantString" string="ActualizarIndicadores"/>
+      </nodes>
+      <nodes xmi:type="profuturo_gen_reclasificacion_Desmarcar.subflow:FCMComposite_1" xmi:id="FCMComposite_1_19" location="332,533">
+        <translation xmi:type="utility:ConstantString" string="Desmarcar"/>
+      </nodes>
+      <nodes xmi:type="profuturo_gen_reclasificacion_GenerarDesmarca.subflow:FCMComposite_1" xmi:id="FCMComposite_1_17" location="314,466">
+        <translation xmi:type="utility:ConstantString" string="GenerarDesmarca"/>
+      </nodes>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_3" targetNode="FCMComposite_1_9" sourceNode="FCMComposite_1_8" sourceTerminalName="OutTerminal.Output" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_14" targetNode="FCMComposite_1_10" sourceNode="FCMComposite_1_2" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_15" targetNode="FCMComposite_1_8" sourceNode="FCMComposite_1_3" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_8" targetNode="FCMComposite_1_14" sourceNode="FCMComposite_1_6" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_24" targetNode="FCMComposite_1_15" sourceNode="FCMComposite_1_7" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" targetNode="FCMComposite_1_2" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_2" targetNode="FCMComposite_1_10" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.Input">
+        <bendPoints>177,-56,-505,-48</bendPoints>
+      </connections>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_4" targetNode="FCMComposite_1_10" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.timeout" targetTerminalName="InTerminal.Input">
+        <bendPoints>101,47,-418,55</bendPoints>
+      </connections>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_7" targetNode="FCMComposite_1_10" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.catch" targetTerminalName="InTerminal.Input">
+        <bendPoints>102,66,-417,74</bendPoints>
+      </connections>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_10" targetNode="FCMComposite_1_12" sourceNode="FCMComposite_1_4" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_13" targetNode="FCMComposite_1_9" sourceNode="FCMComposite_1_11" sourceTerminalName="OutTerminal.Output" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_16" targetNode="FCMComposite_1_10" sourceNode="FCMComposite_1_8" sourceTerminalName="OutTerminal.Output1" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_17" targetNode="FCMComposite_1_10" sourceNode="FCMComposite_1_8" sourceTerminalName="OutTerminal.Output2" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_20" targetNode="FCMComposite_1_12" sourceNode="FCMComposite_1_5" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input">
+        <bendPoints>103,-10,-123,58</bendPoints>
+        <bendPoints>104,-79,-122,-11</bendPoints>
+      </connections>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_22" targetNode="FCMComposite_1_11" sourceNode="FCMComposite_1_12" sourceTerminalName="OutTerminal.Output" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_27" targetNode="FCMComposite_1_10" sourceNode="FCMComposite_1_11" sourceTerminalName="OutTerminal.Output1" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_28" targetNode="FCMComposite_1_9" sourceNode="FCMComposite_1_14" sourceTerminalName="OutTerminal.Output" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_5" targetNode="FCMComposite_1_13" sourceNode="FCMComposite_1_20" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_6" targetNode="FCMComposite_1_9" sourceNode="FCMComposite_1_13" sourceTerminalName="OutTerminal.Output" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_9" targetNode="FCMComposite_1_10" sourceNode="FCMComposite_1_13" sourceTerminalName="OutTerminal.Output1" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_11" targetNode="FCMComposite_1_10" sourceNode="FCMComposite_1_13" sourceTerminalName="OutTerminal.Output2" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_12" targetNode="FCMComposite_1_10" sourceNode="FCMComposite_1_14" sourceTerminalName="OutTerminal.Output1" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_18" targetNode="FCMComposite_1_19" sourceNode="FCMComposite_1_18" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_19" targetNode="FCMComposite_1_9" sourceNode="FCMComposite_1_19" sourceTerminalName="OutTerminal.Output" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_26" targetNode="FCMComposite_1_10" sourceNode="FCMComposite_1_19" sourceTerminalName="OutTerminal.Output1" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_31" targetNode="FCMComposite_1_10" sourceNode="FCMComposite_1_12" sourceTerminalName="OutTerminal.Output1" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_32" targetNode="FCMComposite_1_10" sourceNode="FCMComposite_1_12" sourceTerminalName="OutTerminal.Output2" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_33" targetNode="FCMComposite_1_10" sourceNode="FCMComposite_1_15" sourceTerminalName="OutTerminal.Output" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_21" targetNode="FCMComposite_1_17" sourceNode="FCMComposite_1_16" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_23" targetNode="FCMComposite_1_9" sourceNode="FCMComposite_1_17" sourceTerminalName="OutTerminal.Output" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_25" targetNode="FCMComposite_1_10" sourceNode="FCMComposite_1_17" sourceTerminalName="OutTerminal.Output1" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_29" targetNode="FCMComposite_1_10" sourceNode="FCMComposite_1_17" sourceTerminalName="OutTerminal.Output2" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_34" targetNode="FCMComposite_1_9" sourceNode="FCMComposite_1_15" sourceTerminalName="OutTerminal.Output1" targetTerminalName="InTerminal.in"/>
+    </composition>
+    <propertyOrganizer/>
+    <stickyBoard/>
+  </eClassifiers>
+</ecore:EPackage>
